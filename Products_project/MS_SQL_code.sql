@@ -180,8 +180,109 @@ WHERE row_number_cash<=5
 ORDER by YEAR(orderdate), month(orderdate), row_number_cash                 
                  
                  
+
+
+CREATE TABLE draft_table (dt date,cnt int)
+
+Drop TABLE if EXISTS table_notes
+
+if OBJECT_ID('draft_table') IS not NULL
+BEGIN
+DROP TABLE draft_table
+end;
+
+
+DELETE FROM USERS WHERE ID=2 LIMIT 1
+DELETE FROM USERS WHERE ID>5;
+DELETE FROM USERS
+TRUNCATE TABLE USERS
+
+
+UPDATE USERS SET NAME=Мышь WHERE ID=3 LIMIT 1
+UPDATE USERS SET NAME=Мышь, FOOD=Сыр WHERE ID=3 LIMIT 1
+
+CREATE TABLE Planets(
+ID int IDENTITY(1,1) NOT NULL,
+PlanetName varchar(10) NOT NULL,
+Radius float,
+SunSeason float,
+OpeningYear int,
+HavingRights bit,
+Opener varchar(30)
+)
+
+
+
+CREATE PROCEDURE S_S @TN VARCHAR(50), @N int = 10
+AS
+BEGIN
+    DECLARE @query VARCHAR(1000)
+    SET @query = 'SELECT TOP ' + CAST(@N AS VARCHAR(10)) + ' * FROM ' + QUOTENAME(@TN)
+    EXEC (@query)
+END
+
+S_S @TN = Clusters, @N=2
+
+
+
+--Собраить подневную статистику продаж
+
+create PROC Small_ETL @start date, @finish date, @to_del BIT=0
+AS
+IF OBJECT_ID('[dbo].[Orders_stat]') is not NULL and @to_del =1
+	BEGIN
+	DROP TABLE Orders_stat
+	end;
+IF OBJECT_ID('[dbo].[Orders_stat]') is NULL
+	BEGIN
+	CREATE TABLE Orders_stat(dt date, cnt int)
+	end;
+DELETE FROM Orders_stat WHERE dt >= @start and dt < @finish
+while @start < @finish
+BEGIN
+INSERT INTO Orders_stat
+SELECT @start as dt, COUNT(*) as cnt
+FROM Orders
+WHERE orderdate = @start
+set @start=dateadd(day,1,@start)
+end;
+
+Small_ETL @start='2023-05-01',@finish ='2023-12-01'
+Small_ETL @start='2023-06-01',@finish ='2023-12-01', @to_del=1
+
+SELECT COUNT(*) FROM Orders_stat
+
+SELECT * FROM Orders_stat
                  
-                 
-                 
-                 
-                 
+SELECT orderdate, COUNT(*) FROM Orders
+GROUP by orderdate
+
+
+
+
+create table Orders2 (ID int, date varchar(10))
+
+INSERT into Orders2
+VALUES (1, '2023-01-01'),
+(2, '2023-01-02')
+
+DELETE FROM Orders2 where id=1 
+
+
+SELECT * from Orders2
+
+update Orders2 set date='2023-01-05'WHERE ID=2
+
+DELETE from Orders2
+
+
+
+CREATE VIEW view_stat AS 
+SELECT OrderDate, COUNT(*) AS OrderCount 
+FROM Orders o
+GROUP BY OrderDate;
+
+SELECT * FROM view_stat vs
+WHERE OrderDate > '2023-07-05';
+
+
