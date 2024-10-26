@@ -37,9 +37,9 @@ GROUP BY o.OrderID;
 Package в декабре 2023 года
 */
 
-WITH shippers_statistic AS (SELECT s.ShipperName , MONTH(o.OrderDate) AS 'month', YEAR(o.OrderDate) as 'year', count(OrderID) AS 'cnt_orders' FROM orders o 
+WITH shippers_statistic AS (SELECT s.ShipperName, YEAR(o.OrderDate) as 'year' , MONTH(o.OrderDate) AS 'month', count(OrderID) AS 'cnt_orders' FROM orders o 
 JOIN shippers s ON o.ShipperID =s.ShipperID
-GROUP BY o.ShipperID, MONTH(o.OrderDate), YEAR(o.OrderDate))
+GROUP BY o.ShipperID, YEAR(o.OrderDate), MONTH(o.OrderDate))
 
 -- SELECT * FROM shippers_statistic;
 
@@ -49,37 +49,37 @@ WHERE YEAR ='2023' AND MONTH = '12' AND ShipperName = 'United Package';
 /*
  Ответ:
  
- ShipperName     |month|year|cnt_orders|
-----------------+-----+----+----------+
-Federal Shipping|    7|2023|        18|
-Speedy Express  |    7|2023|        14|
-United Package  |    7|2023|        12|
-Speedy Express  |    8|2023|        18|
-United Package  |    8|2023|        16|
-Federal Shipping|    8|2023|        16|
-United Package  |    9|2023|        30|
-Speedy Express  |    9|2023|         6|
-Federal Shipping|    9|2023|        10|
-United Package  |   10|2023|        20|
-Federal Shipping|   10|2023|        20|
-Speedy Express  |   10|2023|        12|
-United Package  |   11|2023|        18|
-Federal Shipping|   11|2023|        20|
-Speedy Express  |   11|2023|        12|
-United Package  |   12|2023|        16|
-Speedy Express  |   12|2023|        14|
-Federal Shipping|   12|2023|        32|
-Federal Shipping|    1|2024|        16|
-Speedy Express  |    1|2024|        28|
-United Package  |    1|2024|        22|
-Federal Shipping|    2|2024|         4|
-United Package  |    2|2024|        14|
-Speedy Express  |    2|2024|         4|
+ShipperName     |year|month|cnt_orders|
+----------------+----+-----+----------+
+Federal Shipping|2023|    7|        18|
+Speedy Express  |2023|    7|        14|
+United Package  |2023|    7|        12|
+Speedy Express  |2023|    8|        18|
+United Package  |2023|    8|        16|
+Federal Shipping|2023|    8|        16|
+United Package  |2023|    9|        30|
+Speedy Express  |2023|    9|         6|
+Federal Shipping|2023|    9|        10|
+United Package  |2023|   10|        20|
+Federal Shipping|2023|   10|        20|
+Speedy Express  |2023|   10|        12|
+United Package  |2023|   11|        18|
+Federal Shipping|2023|   11|        20|
+Speedy Express  |2023|   11|        12|
+United Package  |2023|   12|        16|
+Speedy Express  |2023|   12|        14|
+Federal Shipping|2023|   12|        32|
+Federal Shipping|2024|    1|        16|
+Speedy Express  |2024|    1|        28|
+United Package  |2024|    1|        22|
+Federal Shipping|2024|    2|         4|
+United Package  |2024|    2|        14|
+Speedy Express  |2024|    2|         4|
 
 
-ShipperName   |month|year|cnt_orders|
---------------+-----+----+----------+
-United Package|   12|2023|        16|
+ShipperName   |year|month|cnt_orders|
+--------------+----+-----+----------+
+United Package|2023|   12|        16|
  */
 
 /*
