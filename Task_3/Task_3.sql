@@ -90,7 +90,7 @@ United Package|2023|   12|        16|
 за весь период)
  */
 
-SELECT CustomerName ,ROUND(SUM(Quantity * Price)/COUNT(DISTINCT CustomerName),2) AS LTV FROM customers c 
+SELECT DISTINCT CustomerName, ROUND(SUM(Quantity * Price)/COUNT(DISTINCT CustomerName),2) AS LTV FROM customers c 
 JOIN orders o ON c.CustomerID =o.CustomerID
 JOIN orderdetails od ON od.OrderID = o.OrderID
 JOIN products p ON p.ProductID = od.ProductID
