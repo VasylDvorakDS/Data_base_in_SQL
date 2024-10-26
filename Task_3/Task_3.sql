@@ -14,20 +14,21 @@ Package в декабре 2023 года
 */
 SELECT o.OrderID ,ROUND(AVG(p.Price * o.Quantity),2) AS 'avg_price' FROM orderdetails o 
 JOIN products p ON p.ProductID =o.ProductID 
-GROUP BY o.OrderID; 
+GROUP BY o.OrderID
+ORDER BY o.OrderID; 
 
 /*
  Ответ:
  
- OrderID|avg_price|
+OrderID|avg_price|
 -------+---------+
-  10413|   881.33|
-  10406|   500.20|
-  10370|   486.67|
-/-/-/-/-/-/-/-/-/-/-/
-  10320|   630.00|
-  10274|   329.00|
-  10381|   140.00| 
+  10248|   187.33|
+  10249|  1163.50|
+  10250|   753.33|
+/-/-/-/-/-/-/-/-/-/
+  10441|  2150.00|
+  10442|   736.67|
+  10443|   333.00|
  */
 
 /*
@@ -39,7 +40,8 @@ Package в декабре 2023 года
 
 WITH shippers_statistic AS (SELECT s.ShipperName, YEAR(o.OrderDate) as 'year' , MONTH(o.OrderDate) AS 'month', count(OrderID) AS 'cnt_orders' FROM orders o 
 JOIN shippers s ON o.ShipperID =s.ShipperID
-GROUP BY o.ShipperID, YEAR(o.OrderDate), MONTH(o.OrderDate))
+GROUP BY o.ShipperID, YEAR(o.OrderDate), MONTH(o.OrderDate)
+ORDER BY s.ShipperName, YEAR(o.OrderDate), MONTH(o.OrderDate))
 
 -- SELECT * FROM shippers_statistic;
 
@@ -52,29 +54,29 @@ WHERE YEAR ='2023' AND MONTH = '12' AND ShipperName = 'United Package';
 ShipperName     |year|month|cnt_orders|
 ----------------+----+-----+----------+
 Federal Shipping|2023|    7|        18|
-Speedy Express  |2023|    7|        14|
-United Package  |2023|    7|        12|
-Speedy Express  |2023|    8|        18|
-United Package  |2023|    8|        16|
 Federal Shipping|2023|    8|        16|
-United Package  |2023|    9|        30|
-Speedy Express  |2023|    9|         6|
 Federal Shipping|2023|    9|        10|
-United Package  |2023|   10|        20|
 Federal Shipping|2023|   10|        20|
-Speedy Express  |2023|   10|        12|
-United Package  |2023|   11|        18|
 Federal Shipping|2023|   11|        20|
-Speedy Express  |2023|   11|        12|
-United Package  |2023|   12|        16|
-Speedy Express  |2023|   12|        14|
 Federal Shipping|2023|   12|        32|
 Federal Shipping|2024|    1|        16|
-Speedy Express  |2024|    1|        28|
-United Package  |2024|    1|        22|
 Federal Shipping|2024|    2|         4|
-United Package  |2024|    2|        14|
+Speedy Express  |2023|    7|        14|
+Speedy Express  |2023|    8|        18|
+Speedy Express  |2023|    9|         6|
+Speedy Express  |2023|   10|        12|
+Speedy Express  |2023|   11|        12|
+Speedy Express  |2023|   12|        14|
+Speedy Express  |2024|    1|        28|
 Speedy Express  |2024|    2|         4|
+United Package  |2023|    7|        12|
+United Package  |2023|    8|        16|
+United Package  |2023|    9|        30|
+United Package  |2023|   10|        20|
+United Package  |2023|   11|        18|
+United Package  |2023|   12|        16|
+United Package  |2024|    1|        22|
+United Package  |2024|    2|        14|
 
 
 ShipperName   |year|month|cnt_orders|
@@ -93,17 +95,17 @@ JOIN orders o ON c.CustomerID =o.CustomerID
 JOIN orderdetails od ON od.OrderID = o.OrderID
 JOIN products p ON p.ProductID = od.ProductID
 GROUP BY c.CustomerName 
-
+ORDER BY LTV DESC;
 
 /*
 Ответ:
 CustomerName                      |LTV     |
 ----------------------------------+--------+
-Ana Trujillo Emparedados y helados|  222.00|
-Antonio Moreno Taquería           | 1008.00|
-Around the Horn                   | 3390.00|
+Ernst Handel                      |70338.00|
+Mère Paillarde                    |46514.00|
+Save-a-lot Markets                |44580.00|
 /-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/
-White Clover Markets              | 8740.00|
-Wilman Kala                       | 1124.00|
-Wolski                            | 1110.00|
+Centro comercial Moctezuma        |  252.00|
+Ana Trujillo Emparedados y helados|  222.00|
+Franchi S.p.A.                    |  124.00|
  */
